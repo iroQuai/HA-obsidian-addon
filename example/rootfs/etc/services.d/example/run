@@ -1,41 +1,43 @@
 #!/usr/bin/with-contenv bashio
-# ==================================================================
-# Init script for Obsidian Home Assistant add-on
-# ==================================================================
+# ==============================================================================
+# Run script for the Example (Obsidian) Home Assistant add-on
+# ==============================================================================
 
-# Declare variables
+# Declare variables from config.yaml
 PUID=$(bashio::config 'PUID')
 PGID=$(bashio::config 'PGID')
 TZ=$(bashio::config 'TZ')
 
-bashio::log.info "Starting Obsidian add-on initialization"
-bashio::log.info "Using PUID=$PUID, PGID=$PGID, TZ=$TZ"
+# Export environment variables
+export PUID PGID TZ
+bashio::log.info "Environment variables exported: PUID=$PUID, PGID=$PGID, TZ=$TZ"
 
-# Create addon_config folder
-if [ ! -d /addon_config/obsidian ]; then
-    bashio::log.info "Creating /addon_config/obsidian"
-    mkdir -p /addon_config/obsidian
-    chown -R "$PUID:$PGID" /addon_config/obsidian
+# ==================================================================
+# Setup folders
+# ==================================================================
+
+# addon_config folder
+if [ ! -d /addon_config/example ]; then
+    bashio::log.info "Creating /addon_config/example"
+    mkdir -p /addon_config/example
+    chown -R "$PUID:$PGID" /addon_config/example
 fi
 rm -rf /config
-ln -s /addon_config/obsidian /config
+ln -s /addon_config/example /config
 bashio::log.info "Config folder linked"
 
-# Create data folder for vault
-if [ ! -d /data/obsidian ]; then
-    bashio::log.info "Creating /data/obsidian"
-    mkdir -p /data/obsidian
-    chown -R "$PUID:$PGID" /data/obsidian
+# data folder for vault
+if [ ! -d /data/example ]; then
+    bashio::log.info "Creating /data/example"
+    mkdir -p /data/example
+    chown -R "$PUID:$PGID" /data/example
 fi
 rm -rf /vault
-ln -s /data/obsidian /vault
+ln -s /data/example /vault
 bashio::log.info "Vault folder linked"
-
-# Set timezone
-export TZ="$TZ"
-bashio::log.info "Timezone set to $TZ"
 
 # ==================================================================
 # Start Obsidian service
 # ==================================================================
+bashio::log.info "Starting Obsidian service..."
 exec /usr/bin/obsidian
