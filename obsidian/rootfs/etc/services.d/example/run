@@ -1,0 +1,43 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Run script for the Example (Obsidian) Home Assistant add-on
+# ==============================================================================
+
+# Declare variables from config.yaml
+PUID=$(bashio::config 'PUID')
+PGID=$(bashio::config 'PGID')
+TZ=$(bashio::config 'TZ')
+
+# Export environment variables
+export PUID PGID TZ
+bashio::log.info "Environment variables exported: PUID=$PUID, PGID=$PGID, TZ=$TZ"
+
+# ==================================================================
+# Setup folders
+# ==================================================================
+
+# addon_config folder
+if [ ! -d /addon_config/example ]; then
+    bashio::log.info "Creating /addon_config/example"
+    mkdir -p /addon_config/example
+    chown -R "$PUID:$PGID" /addon_config/example
+fi
+rm -rf /config
+ln -s /addon_config/example /config
+bashio::log.info "Config folder linked"
+
+# data folder for vault
+if [ ! -d /data/example ]; then
+    bashio::log.info "Creating /data/example"
+    mkdir -p /data/example
+    chown -R "$PUID:$PGID" /data/example
+fi
+rm -rf /vault
+ln -s /data/example /vault
+bashio::log.info "Vault folder linked"
+
+# ==================================================================
+# Start Obsidian service
+# ==================================================================
+bashio::log.info "Starting Obsidian service..."
+exec /usr/bin/obsidian
