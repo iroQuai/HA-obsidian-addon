@@ -2,15 +2,13 @@
 # Home Assistant Obsidian Add-on
 # ==============================
 
-# Base image (LinuxServer Obsidian)
 ARG BUILD_FROM=lscr.io/linuxserver/obsidian:latest
 FROM ${BUILD_FROM}
 
-# Set maintainer label
 LABEL maintainer="ha.addons@stijnbiemans.nl"
-LABEL org.opencontainers.image.title="Home Assistant Add-on: Example"
+LABEL org.opencontainers.image.title="Home Assistant Add-on: Obsidian"
 LABEL org.opencontainers.image.description="Web-based Obsidian Markdown editor integrated into Home Assistant"
-LABEL org.opencontainers.image.source="https://github.com/iroQuai/HA-obsidian-addon/tree/main/example"
+LABEL org.opencontainers.image.source="https://github.com/iroQuai/HA-obsidian-addon/tree/main/obsidian"
 
 # Install Bashio library for HA add-ons
 RUN apk add --no-cache bash curl \
