@@ -1,12 +1,13 @@
 name: Obsidian
-version: "1.0.0"
+version: "latest"
 slug: obsidian
 description: Web-based Obsidian Markdown editor integrated into Home Assistant
 url: "https://github.com/iroQuai/HA-obsidian-addon/tree/main/obsidian"
 arch:
-  - amd64
   - aarch64
+  - amd64
 init: false
+legacy: true 
 map:
   - addon_config:rw
   - data:rw
@@ -20,10 +21,12 @@ schema:
   TZ: str?
 image: "lscr.io/linuxserver/obsidian:latest"
 ports:
-  3000/tcp: 3241  # containerpoort : host-poort
+  3000/tcp: 3241   # http (optioneel)
+  3001/tcp: 3242   # https (aanbevolen)
 ports_description:
-  3000/tcp: Web UI port
+  3000/tcp: Web UI (HTTP)
+  3001/tcp: Web UI (HTTPS)
 privileged: []
-webui: "[PROTO:ssl]://[HOST]:[PORT:3241]"
+webui: "https://[HOST]:[PORT:3001]"
 stage: experimental
 startup: services
