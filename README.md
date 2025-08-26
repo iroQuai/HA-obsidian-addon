@@ -14,7 +14,6 @@ This repository contains the following add-on:
 
 ![Supports aarch64 Architecture][aarch64-shield]
 ![Supports amd64 Architecture][amd64-shield]
-![Supports armv7 Architecture][armv7-shield]
 
 _Obsidian add-on to run a web-based Markdown editor integrated into Home Assistant._
 
