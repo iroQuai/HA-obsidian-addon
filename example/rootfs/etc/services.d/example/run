@@ -1,19 +1,41 @@
 #!/usr/bin/with-contenv bashio
-# ==============================================================================
-# Start the example service
-# s6-overlay docs: https://github.com/just-containers/s6-overlay
-# ==============================================================================
-
-# Add your code here
+# ==================================================================
+# Init script for Obsidian Home Assistant add-on
+# ==================================================================
 
 # Declare variables
-declare message
+PUID=$(bashio::config 'PUID')
+PGID=$(bashio::config 'PGID')
+TZ=$(bashio::config 'TZ')
 
-## Get the 'message' key from the user config options.
-message=$(bashio::config 'message')
+bashio::log.info "Starting Obsidian add-on initialization"
+bashio::log.info "Using PUID=$PUID, PGID=$PGID, TZ=$TZ"
 
-## Print the message the user supplied, defaults to "Hello World..."
-bashio::log.info "${message:="Hello World..."}"
+# Create addon_config folder
+if [ ! -d /addon_config/obsidian ]; then
+    bashio::log.info "Creating /addon_config/obsidian"
+    mkdir -p /addon_config/obsidian
+    chown -R "$PUID:$PGID" /addon_config/obsidian
+fi
+rm -rf /config
+ln -s /addon_config/obsidian /config
+bashio::log.info "Config folder linked"
 
-## Run your program
-exec /usr/bin/my_program
+# Create data folder for vault
+if [ ! -d /data/obsidian ]; then
+    bashio::log.info "Creating /data/obsidian"
+    mkdir -p /data/obsidian
+    chown -R "$PUID:$PGID" /data/obsidian
+fi
+rm -rf /vault
+ln -s /data/obsidian /vault
+bashio::log.info "Vault folder linked"
+
+# Set timezone
+export TZ="$TZ"
+bashio::log.info "Timezone set to $TZ"
+
+# ==================================================================
+# Start Obsidian service
+# ==================================================================
+exec /usr/bin/obsidian
