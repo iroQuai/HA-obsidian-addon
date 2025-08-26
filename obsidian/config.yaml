@@ -19,7 +19,7 @@ schema:
   PUID: int
   PGID: int
   TZ: str?
-# image: "lscr.io/linuxserver/obsidian:latest"
+image: "lscr.io/linuxserver/obsidian:latest"
 ports:
   3000/tcp: 3241  # containerpoort : host-poort
 ports_description:
