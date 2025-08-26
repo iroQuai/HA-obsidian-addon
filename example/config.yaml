@@ -1,20 +1,30 @@
-# https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
-name: Example add-on
-version: "1.2.0"
-slug: example
-description: Example add-on
-url: "https://github.com/home-assistant/addons-example/tree/main/example"
+name: Obsidian
+version: "1.0.0"
+slug: obsidian
+description: Web-based Obsidian Markdown editor integrated into Home Assistant
+url: "https://github.com/iroQuai/HA-obsidian-addon/tree/main/obsidian"
 arch:
-  - armhf
-  - armv7
   - aarch64
   - amd64
-  - i386
+  - armv7
 init: false
 map:
-  - share:rw
+  - config:rw
+  - vault:rw
 options:
-  message: "Hello world..."
+  PUID: 1000
+  PGID: 1000
+  TZ: "Europe/Amsterdam"
 schema:
-  message: "str?"
-image: "ghcr.io/home-assistant/{arch}-addon-example"
+  PUID: int
+  PGID: int
+  TZ: str?
+image: "lscr.io/linuxserver/obsidian:latest"
+ports:
+  3000/tcp: 3241  # containerpoort : host-poort
+ports_description:
+  3000/tcp: Web UI port
+privileged: []
+webui: "[PROTO:ssl]://[HOST]:[PORT:3241]"
+stage: experimental
+startup: services
