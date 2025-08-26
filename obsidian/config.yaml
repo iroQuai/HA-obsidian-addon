@@ -1,5 +1,5 @@
 name: Obsidian
-version: "latest"
+version: "1.0"
 slug: obsidian
 description: Web-based Obsidian Markdown editor integrated into Home Assistant
 url: "https://github.com/iroQuai/HA-obsidian-addon/tree/main/obsidian"
